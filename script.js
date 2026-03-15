@@ -78,17 +78,18 @@ function checkCollision(ball, paddle) {
         ball.dy *= -1;
     }
 
-    if (paddle.x + paddle.width > canvas.width || paddle.x - paddle.width < 0) {
-        ball.dx *= 0;
+    if (paddle.x < 0) {
+        paddle.x = 0;
+    }
+
+    if (paddle.x + paddle.width > canvas.width) {
+        paddle.x = canvas.width - paddle.width;
     }
 }
 
 // Paddle movement
 function updatePaddle() {
     paddle.x += paddle.dx;
-    // не выходить за границы canvas
-    if (paddle.x < 0) paddle.x = 0;
-    if (paddle.x + paddle.width > canvas.width) paddle.x = canvas.width - paddle.width;
 }
 
 // Game Loop
@@ -100,6 +101,8 @@ function draw() {
 
     updateBall();
     updatePaddle();
+
+    checkCollision(ball, paddle);
 
     requestAnimationFrame(draw);
 }
